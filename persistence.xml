@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="true" context="xml_new" deleted="false" description="" enabled="true" name="persistence_2.0">&lt;?xml version="1.0" encoding="UTF-8"?&gt;&#13;
+&lt;persistence version="2.0"&#13;
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&#13;
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"&gt;&#13;
+	&lt;persistence-unit name="${cursor}" transaction-type=""&gt;&#13;
+		&lt;provider&gt;org.hibernate.ejb.HibernatePersistence&lt;/provider&gt;&#13;
+		&lt;properties&gt;		&#13;
+			&lt;property name="javax.persistence.jdbc.url" value="" /&gt;&#13;
+			&lt;property name="javax.persistence.jdbc.user" value="" /&gt;&#13;
+			&lt;property name="javax.persistence.jdbc.password" value="" /&gt;&#13;
+			&lt;property name="javax.persistence.jdbc.driver" value="" /&gt;&#13;
+			&lt;property name="hibernate.hbm2ddl.auto" value="none" /&gt;&#13;
+			&lt;property name="hibernate.show_sql" value="true" /&gt;&#13;
+			&lt;property name="hibernate.format_sql" value="true" /&gt;&#13;
+			&lt;property name="hibernate.dialect" value="" /&gt;		&#13;
+		&lt;/properties&gt;&#13;
+	&lt;/persistence-unit&gt;&#13;
+&lt;/persistence&gt;</template></templates>

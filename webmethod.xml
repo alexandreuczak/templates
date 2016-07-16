@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="true" context="java" deleted="false" description="" enabled="true" name="webmethod">${imp:import(javax.jws.WebMethod, javax.jws.WebParam, javax.jws.WebResult)}&#13;
+&#13;
+@Override&#13;
+@WebMethod&#13;
+@WebResult&#13;
+public ${return_type} ${method_name}(@WebParam(name = "${name}") ${type} ${name}) throws ApplicationFault {&#13;
+	${cursor}&#13;
+	return new ${return_type}();&#13;
+}</template></templates>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="true" context="java" deleted="false" description="" enabled="true" name="webservice">${imp:import(javax.ejb.Stateless, javax.jws.HandlerChain, javax.jws.WebService)}&#13;
+&#13;
+@Stateless(mappedName =  ${primary_type_name}Remote.MAPPED_NAME)&#13;
+@WebService(serviceName = "${primary_type_name}", portName = "${primary_type_name}")&#13;
+@HandlerChain(file = "handlers.xml")</template></templates>
