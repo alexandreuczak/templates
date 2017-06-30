@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="true" context="xml_all" deleted="false" description="" enabled="true" name="logback appender stash">&lt;appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="FILE_STASH"&gt;&#13;
+	&lt;file&gt;${LOG_HOME}/${APP_NAME}.json&lt;/file&gt;&#13;
+	&lt;rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy"&gt;&#13;
+		&lt;maxIndex&gt;1&lt;/maxIndex&gt;&#13;
+		&lt;FileNamePattern&gt;${LOG_HOME}/${APP_NAME}.json.%i&lt;/FileNamePattern&gt;&#13;
+	&lt;/rollingPolicy&gt;&#13;
+	&lt;triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy"&gt;&#13;
+		&lt;MaxFileSize&gt;1mb&lt;/MaxFileSize&gt;&#13;
+	&lt;/triggeringPolicy&gt;&#13;
+	&lt;encoder class="net.logstash.logback.encoder.LogstashEncoder"&gt;&#13;
+		&lt;customFields&gt;{"application":"${APP_NAME}"}&lt;/customFields&gt;&#13;
+	&lt;/encoder&gt;&#13;
+&lt;/appender&gt;</template></templates>
