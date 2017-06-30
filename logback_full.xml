@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+
+	<property name="APP_NAME" value="renner-pdv-integracao" />
+	<property name="LOG_HOME" value="servers/${weblogic.Name}/logs" />
+	<property name="LOG_LEVEL" value="${DEFAULT_LOG_LEVEL:-INFO}" />
+	<property name="SQL_LOG_LEVEL" value="${SQL_LOG_LEVEL:-DEBUG}" />
+	
+	<if condition='property("app.env").contains("desenv")'>
+		<then>
+			<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+				<encoder>
+					<pattern>[%d{yyyy-MM-dd HH:mm:ss.sss}] [%thread] [%X{username}] %-5level %logger{65} - %msg%n</pattern>
+				</encoder>
+			</appender>			
+			<logger name="com.hazelcast" level="DEBUG" additivity="false">
+				<appender-ref ref="STDOUT" />
+			</logger>
+
+			<logger name="org.jboss.weld" level="FINEST" additivity="false">
+				<appender-ref ref="STDOUT" />
+			</logger>
+
+			<logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+				<appender-ref ref="STDOUT" />
+			</logger>
+			
+			<logger name="org.hibernate.type.descriptor.sql.BasicBinder"
+				level="ALL" additivity="false">
+				<appender-ref ref="STDOUT" />
+			</logger>
+
+			<logger
+				name="org.hibernate.engine.internal.StatisticalLoggingSessionEventListener"
+				level="WARN" additivity="false">
+				<appender-ref ref="STDOUT" />
+			</logger>
+			
+			<logger name="org.hibernate.type" level="TRACE">
+				<appender-ref ref="STDOUT" />
+			</logger>
+
+			<logger name="br.com.lojasrenner" level="DEBUG" additivity="false">
+				<appender-ref ref="STDOUT" />
+			</logger>
+			
+			<logger name="org.hibernate.cache" level="TRACE" additivity="false">
+				<appender-ref ref="STDOUT" />
+			</logger>
+			
+			<logger name="org.hibernate.internal" level="TRACE" additivity="false">
+				<appender-ref ref="STDOUT" />
+			</logger>
+			
+			<root level="INFO">
+				<appender-ref ref="STDOUT" />
+			</root>
+		</then>
+		<else>
+
+			<appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="FILE_APP">
+				<file>${LOG_HOME}/${APP_NAME}.log</file>
+				<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+					<fileNamePattern>${LOG_HOME}/${APP_NAME}_%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+					<maxHistory>5</maxHistory>
+					<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+						<maxFileSize>50mb</maxFileSize>
+					</timeBasedFileNamingAndTriggeringPolicy>
+				</rollingPolicy>
+				<encoder>
+					<pattern>%d{yyyy-MM-dd HH:mm:ss.sss} [%thread] [%X{username}] %-5level %logger{50} - %msg%n</pattern>
+				</encoder>
+			</appender>
+
+			<appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="FILE_STASH">
+				<file>${LOG_HOME}/${APP_NAME}.json</file>
+				<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+					<maxIndex>1</maxIndex>
+					<FileNamePattern>${LOG_HOME}/${APP_NAME}.json.%i</FileNamePattern>
+				</rollingPolicy>
+				<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+					<MaxFileSize>1mb</MaxFileSize>
+				</triggeringPolicy>
+				<encoder class="net.logstash.logback.encoder.LogstashEncoder">
+					<customFields>{"application":"${APP_NAME}"}</customFields>
+				</encoder>
+			</appender>
+			
+			<appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="TEMPOS">
+		        <file>${LOG_HOME}/${APP_NAME}_tempos.log</file>
+		        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		            <fileNamePattern>${LOG_HOME}/${MODULE_NAME}_tempos_%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+		            <maxHistory>5</maxHistory>
+		            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+		                <maxFileSize>50mb</maxFileSize>
+		            </timeBasedFileNamingAndTriggeringPolicy>
+		        </rollingPolicy>
+		        <encoder>
+		            <pattern>[%d{yyyy-MM-dd HH:mm:ss.sss}] [%thread] [%X{username}] %-5level %logger{50} - %msg%n</pattern>
+		        </encoder>
+		    </appender>
+		    
+		    <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="TEMPOS_STASH">
+				<file>${LOG_HOME}/${APP_NAME}_tempos.json</file>
+				<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+					<maxIndex>1</maxIndex>
+					<FileNamePattern>${LOG_HOME}/${APP_NAME}_tempos.json.%i</FileNamePattern>
+				</rollingPolicy>
+				<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+					<MaxFileSize>1mb</MaxFileSize>
+				</triggeringPolicy>
+				<encoder class="net.logstash.logback.encoder.LogstashEncoder">
+					<customFields>{"application":"${APP_NAME}", "feature": "tempos"}</customFields>
+				</encoder>
+			</appender>
+		    
+			<logger name="br.com.lojasrenner.METHOD_TIMING" level="${LOG_LEVEL}" additivity="false">
+				<appender-ref ref="TEMPOS_STASH" />
+				<appender-ref ref="TEMPOS" />
+			</logger>			
+
+			<logger name="br.com.lojasrenner" level="${LOG_LEVEL}" additivity="false">
+				<appender-ref ref="FILE_STASH" />
+				<appender-ref ref="FILE_APP" />
+			</logger>
+			
+			<root level="INFO">
+				<appender-ref ref="FILE_STASH" />
+				<appender-ref ref="FILE_APP" />
+			</root>			
+		</else>
+	</if>
+</configuration>
