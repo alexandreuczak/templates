@@ -1,0 +1,5 @@
+---
+applications:
+- name: "sam-desktop"
+  archive: "sam.rpm" 
+  type: "RPM"
