@@ -1,11 +1,12 @@
 node {
+    teste = readYaml file: 'deployment.yml'
     parameters {
         string(name: 'LOJAS', defaultValue: '', description: 'Lojas que receberão o artefato')
     }
     stage('Enviando Artefato'){
         sshagent (credentials: ['dcrpm']) {
             echo 'Enviando via SSH'
-            def teste = readYaml file: 'deployment.yml'
+            
             print "${teste}"
             sh 'scp -o StrictHostKeyChecking=no -l 400 /tmp/sam*.rpm root@172.17.0.3:/tmp/sam.rpm'
         
